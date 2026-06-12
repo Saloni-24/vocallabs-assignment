@@ -17,57 +17,47 @@ If you are developing a production application, we recommend updating the config
 
 ```js
 export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+  # VoiceDesk
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+  React + TypeScript + Vite app with Nhost email/password auth and a Deepgram live speech-to-text dashboard.
 
-      // Other configs...
+  ## Local Development
+
+  ```bash
+  npm install
+  npm run dev
+  ```
+
+  Create a `.env.local` file with:
+
+  ```dotenv
+  VITE_NHOST_SUBDOMAIN=your-nhost-subdomain
+  VITE_NHOST_REGION=your-nhost-region
+  VITE_DEEPGRAM_API_KEY=your-deepgram-api-key
+  VITE_DEEPGRAM_MODEL=nova-3
+  VITE_DEEPGRAM_LANGUAGE=en
+  ```
+
+  ## Build
+
+  ```bash
+  npm run build
+  ```
+
+  ## Deploy to Vercel
+
+  This repo is ready for Vercel deployment.
+
+  1. Push the latest code to GitHub.
+  2. Go to the Vercel dashboard and import the GitHub repository.
+  3. Set the build command to `npm run build` and the output directory to `dist`.
+  4. Add these environment variables in Vercel:
+     - `VITE_NHOST_SUBDOMAIN`
+     - `VITE_NHOST_REGION`
+     - `VITE_DEEPGRAM_API_KEY`
+     - `VITE_DEEPGRAM_MODEL`
+     - `VITE_DEEPGRAM_LANGUAGE`
+  5. Deploy.
+
+  The included [vercel.json](vercel.json) rewrites all routes to `index.html` so the React Router dashboard and login pages work after refresh.
     ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
